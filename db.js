@@ -2,61 +2,40 @@ import Sequelize from 'sequelize';
 import Faker from 'faker';
 import _ from 'lodash';
 
+import BlockData from './models/block_data.js';
+import RawTransaction from './models/raw_transaction';
+
+//require('./models/block.js')
+
 const Conn = new Sequelize(
-  'relay',
+  'eth',
   'postgres',
-  'postgres',
+  'api',
   {
     dialect: 'postgres',
     host: 'localhost'
   }
 );
 
-const Person = Conn.define('person', {
-  firstName: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  email: {
-    type: Sequelize.STRING,
-    validate: {
-      isEmail: true
-    }
-  }
-});
+var raw_transaction = RawTransaction(Conn, Sequelize);
+var block_data = BlockData(Conn, Sequelize);
 
-const Post = Conn.define('post', {
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  content: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
+raw_transaction.belongsTo(block_data);
+block_data.hasMany(raw_transaction);
 
-// Relations
-Person.hasMany(Post);
-Post.belongsTo(Person);
-
-Conn.sync({ force: true }).then(()=> {
-  _.times(10, ()=> {
-    return Person.create({
-      firstName: Faker.name.firstName(),
-      lastName: Faker.name.lastName(),
-      email: Faker.internet.email()
-    }).then(person => {
-      return person.createPost({
-        title: `Sample post by ${person.firstName}`,
-        content: 'here is some content'
-      });
-    });
-  });
-});
+// Conn.sync({ force: true }).then(()=> {
+//   _.times(10, ()=> {
+//     return Person.create({
+//       firstName: Faker.name.firstName(),
+//       lastName: Faker.name.lastName(),
+//       email: Faker.internet.email()
+//     }).then(person => {
+//       return person.createPost({
+//         title: `Sample post by ${person.firstName}`,
+//         content: 'here is some content'
+//       });
+//     });
+//   });
+// });
 
 export default Conn;
