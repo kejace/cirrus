@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      //primaryKey: true,
       autoIncrement: true
     },
     timestamp: {
@@ -30,7 +30,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     to_address: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      primaryKey: true
     },
     value: {
       type: DataTypes.BIGINT,
