@@ -57,6 +57,27 @@ const RawTransaction = new GraphQLObjectType({
   }
 })
 
+const AddressStateRef = new GraphQLObjectType({
+  name: 'AddressStateRef',
+  description: "An address state ref",
+  fields () {
+    return {
+      balance:{
+        type:GraphQLInt,
+        resolve(address_state_ref){
+          return address_state_ref.balance;
+        }
+      },
+      address:{
+        type:GraphQLString,
+        resolve(address_state_ref){
+          return address_state_ref.address;
+        }
+      }
+    };
+  }
+})
+
 // const Post = new GraphQLObjectType({
 //   name: 'Post',
 //   description: 'Blog post',
@@ -154,6 +175,20 @@ const Query2 = new GraphQLObjectType({
         },
         resolve(root, args){
           return Db.models.raw_transaction.findAll({where: args});
+        }
+      },
+      addresses: {
+        type: new GraphQLList(AddressStateRef),
+        args: {
+          balance: {
+            type: GraphQLInt
+          },
+          address: {
+            type: GraphQLInt
+          }
+        },
+        resolve(root, args){
+          return Db.models.address_state_ref.findAll({where: args});
         }
       }
     };
