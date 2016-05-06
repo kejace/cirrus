@@ -193,7 +193,7 @@ const Query2 = new GraphQLObjectType({
         type: new GraphQLList(AddressStateRef),
         args: {
           balance: {
-            type: GraphQLString
+            type: GraphQLInt
           },
           address: {
             type: GraphQLString
