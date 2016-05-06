@@ -63,7 +63,7 @@ const AddressStateRef = new GraphQLObjectType({
   fields () {
     return {
       balance:{
-        type:GraphQLInt,
+        type:GraphQLNumeric,
         resolve(address_state_ref){
           return address_state_ref.balance;
         }
@@ -181,10 +181,10 @@ const Query2 = new GraphQLObjectType({
         type: new GraphQLList(AddressStateRef),
         args: {
           balance: {
-            type: GraphQLInt
+            type: GraphQLNumeric
           },
           address: {
-            type: GraphQLInt
+            type: GraphQLString
           }
         },
         resolve(root, args){
