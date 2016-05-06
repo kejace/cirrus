@@ -44,10 +44,10 @@ const RawTransaction = new GraphQLObjectType({
       nonce:{
         type:GraphQLInt,
         resolve(raw_transaction){
-          return raw_transaction.getBlock();
+          return raw_transaction.nonce;
         }
       }
-    }
+    };
   }
 })
 

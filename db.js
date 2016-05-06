@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import BlockDataRef from './models/block_data_ref.js';
 import RawTransaction from './models/raw_transaction';
+import AddressStateRef from './models/address_state_ref';
 
 //require('./models/block.js')
 
@@ -19,6 +20,7 @@ const Conn = new Sequelize(
 
 var raw_transaction = RawTransaction(Conn, Sequelize);
 var block_data_ref = BlockDataRef(Conn, Sequelize);
+var address_state_ref = AddressStateRef(Conn, Sequelize);
 
 //raw_transaction.belongsTo(block_data_ref);
 //block_data_ref.hasMany(raw_transaction);
