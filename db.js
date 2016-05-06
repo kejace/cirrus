@@ -20,7 +20,7 @@ const Conn = new Sequelize(
 var raw_transaction = RawTransaction(Conn, Sequelize);
 var block_data_ref = BlockDataRef(Conn, Sequelize);
 
-raw_transaction.belongsTo(block_data);
+raw_transaction.belongsTo(block_data_ref);
 block_data_ref.hasMany(raw_transaction);
 
 // Conn.sync({ force: true }).then(()=> {
