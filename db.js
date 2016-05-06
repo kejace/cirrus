@@ -27,7 +27,7 @@ var address_state_ref = AddressStateRef(Conn, Sequelize);
 //address_state_ref.belongsTo(block_data_ref, {foreignKey: 'latest_block_data_ref_number'})
 
 // address belongs to many blocks (as coinbase)
-address_state_ref.hasMany(block_data_ref, {as: 'Blocks', foreignKey: 'number'});
+address_state_ref.hasMany(block_data_ref, {as: 'Blocks', foreignKey: 'coinbase'});
 
 // transaction has (two) addresses (1:2)
 // address belongs to many transactions (2:n)

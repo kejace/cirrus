@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      //primaryKey: true,
       autoIncrement: true
     },
     parent_hash: {
@@ -42,7 +42,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     number: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     gas_limit: {
       type: 'NUMERIC',
