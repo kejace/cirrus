@@ -58,12 +58,6 @@ const RawTransaction = new GraphQLObjectType({
         resolve(raw_transaction){
           return raw_transaction.to_address;
         }
-      },
-      transaction:{
-        type:RawTransaction,
-        resolve(raw_transaction){
-          return raw_transaction.getAddress();
-        }
       }
     };
   }
@@ -84,6 +78,12 @@ const AddressStateRef = new GraphQLObjectType({
         type:GraphQLString,
         resolve(address_state_ref){
           return address_state_ref.address;
+        }
+      },
+      transaction:{
+        type:RawTransaction,
+        resolve(address_state_ref){
+          return address_state_ref.getTransaction();
         }
       }
     };
