@@ -46,6 +46,12 @@ const RawTransaction = new GraphQLObjectType({
         resolve(raw_transaction){
           return raw_transaction.nonce;
         }
+      },
+      from_address:{
+        type:GraphQLString,
+        resolve(raw_transaction){
+          return raw_transaction.from_address;
+        }
       }
     };
   }
