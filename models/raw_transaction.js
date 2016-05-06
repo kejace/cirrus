@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     nonce: {
-      type: 'NUMERIC',
+      type: DataTypes.BIGINT,
       allowNull: false
     },
     gas_price: {
@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     value: {
-      type: 'NUMERIC',
+      type: DataTypes.BIGINT,
       allowNull: false
     },
     code_or_data: {
