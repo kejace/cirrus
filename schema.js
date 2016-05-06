@@ -87,7 +87,7 @@ const AddressStateRef = new GraphQLObjectType({
         }
       },
       mined_blocks:{
-        type:GraphQLList(BlockDataRef),
+        type:new GraphQLList(BlockDataRef),
         resolve(address_state_ref){
           return address_state_ref.getBlocks();
         }
