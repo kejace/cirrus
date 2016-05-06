@@ -9,8 +9,8 @@ import {
 
 import Db from './db';
 
-const BlockData = new GraphQLObjectType({
-  name: 'BlockData',
+const BlockDataRef = new GraphQLObjectType({
+  name: 'BlockDataRef',
   description: 'A mined block',
   fields(){
     return {
@@ -123,7 +123,7 @@ const Query2 = new GraphQLObjectType({
   fields: () => {
     return {
       blocks: {
-        type: new GraphQLList(BlockData),
+        type: new GraphQLList(BlockDataRef),
         args: {
           number: {
             type: GraphQLInt
@@ -133,7 +133,7 @@ const Query2 = new GraphQLObjectType({
           }
         },
         resolve(root, args) {
-          return Db.models.block_data.findAll({where: args});
+          return Db.models.block_data_ref.findAll({where: args});
         }
       },
       transactions: {

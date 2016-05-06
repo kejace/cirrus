@@ -2,7 +2,7 @@ import Sequelize from 'sequelize';
 import Faker from 'faker';
 import _ from 'lodash';
 
-import BlockData from './models/block_data.js';
+import BlockDataRef from './models/block_data_ref.js';
 import RawTransaction from './models/raw_transaction';
 
 //require('./models/block.js')
@@ -18,10 +18,10 @@ const Conn = new Sequelize(
 );
 
 var raw_transaction = RawTransaction(Conn, Sequelize);
-var block_data = BlockData(Conn, Sequelize);
+var block_data_ref = BlockDataRef(Conn, Sequelize);
 
 raw_transaction.belongsTo(block_data);
-block_data.hasMany(raw_transaction);
+block_data_ref.hasMany(raw_transaction);
 
 // Conn.sync({ force: true }).then(()=> {
 //   _.times(10, ()=> {
