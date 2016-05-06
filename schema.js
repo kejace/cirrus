@@ -89,7 +89,7 @@ const AddressStateRef = new GraphQLObjectType({
       blocks:{
         type:BlockDataRef,
         resolve(address_state_ref){
-          return address_state_ref.getBlocks();
+          return address_state_ref.getBlock();
         }
       }
     };
