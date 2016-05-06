@@ -23,8 +23,10 @@ var block_data_ref = BlockDataRef(Conn, Sequelize);
 var address_state_ref = AddressStateRef(Conn, Sequelize);
 
 // block has one address (coinbase)
-block_data_ref.hasOne(address_state_ref, {foreignKey: 'coinbase'});
-address_state_ref.belongsTo(block_data_ref, {foreignKey: 'latest_block_data_ref_number'})
+address_state_ref.hasOne(block_data_ref, {foreignKey: 'coinbase'});
+//block_data_ref.hasOne(address_state_ref, {foreignKey: 'coinbase'});
+//address_state_ref.belongsTo(block_data_ref, {foreignKey: 'latest_block_data_ref_number'})
+
 // address belongs to many blocks
 // transaction has (two) addresses (1:2)
 // address belongs to many transactions (2:n)
