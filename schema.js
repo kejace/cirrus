@@ -95,13 +95,13 @@ const AddressStateRef = new GraphQLObjectType({
       incoming:{
         type:new GraphQLList(RawTransaction),
         resolve(raw_transaction){
-          return raw_transaction.getIncomings();
+          return raw_transaction.getIncoming();
         }
       },
       outgoing:{
         type:new GraphQLList(RawTransaction),
         resolve(raw_transaction){
-          return raw_transaction.getOutgoings();
+          return raw_transaction.getOutgoing();
         }
       }
     };
