@@ -170,7 +170,7 @@ const Query2 = new GraphQLObjectType({
             type: GraphQLInt
           },
           from_address: {
-            type: GraphQLInt
+            type: GraphQLString
           }
         },
         resolve(root, args){
