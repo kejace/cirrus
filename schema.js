@@ -91,6 +91,18 @@ const AddressStateRef = new GraphQLObjectType({
         resolve(address_state_ref){
           return address_state_ref.getBlocks();
         }
+      },
+      incoming:{
+        type:new GraphQLList(RawTransaction),
+        resolve(raw_transaction){
+          return raw_transaction.getIncomings();
+        }
+      },
+      outgoing:{
+        type:new GraphQLList(RawTransaction),
+        resolve(raw_transaction){
+          return raw_transaction.getOutgoings();
+        }
       }
     };
   }
