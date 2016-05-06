@@ -24,8 +24,9 @@ var address_state_ref = AddressStateRef(Conn, Sequelize);
 
 //raw_transaction.belongsTo(block_data_ref);
 //block_data_ref.hasMany(raw_transaction);
-address_state_ref.hasMany(raw_transaction);
-raw_transaction.hasOne(address_state_ref);
+//address_state_ref.hasMany(raw_transaction);
+raw_transaction.hasOne(address_state_ref, {foreignKey: 'to_address'});
+raw_transaction.hasOne(address_state_ref, {foreignKey: 'from_address'});
 
 // Conn.sync({ force: true }).then(()=> {
 //   _.times(10, ()=> {
