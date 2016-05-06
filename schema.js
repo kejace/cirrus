@@ -25,13 +25,13 @@ const BlockDataRef = new GraphQLObjectType({
         resolve(block){
           return block.coinbase;
         }
-      },
-      transaction:{
-        type: RawTransaction,
-        resolve(block){
-          return block.getTransaction();
-        }
       }
+      // ,transaction:{
+      //   type: RawTransaction,
+      //   resolve(block){
+      //     return block.getTransaction();
+      //   }
+      // }
     };
   }
 });
@@ -51,6 +51,12 @@ const RawTransaction = new GraphQLObjectType({
         type:GraphQLString,
         resolve(raw_transaction){
           return raw_transaction.from_address;
+        }
+      },
+      to_address:{
+        type:GraphQLString,
+        resolve(raw_transaction){
+          return raw_transaction.to_address;
         }
       }
     };
