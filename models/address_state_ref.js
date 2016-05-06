@@ -5,12 +5,13 @@ module.exports = function(sequelize, DataTypes) {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
+      //primaryKey: true,
       autoIncrement: true
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     nonce: {
       type: DataTypes.BIGINT,

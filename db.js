@@ -31,7 +31,7 @@ address_state_ref.hasMany(block_data_ref, {as: 'Blocks', foreignKey: 'number'});
 
 // transaction has (two) addresses (1:2)
 // address belongs to many transactions (2:n)
-address_state_ref.hasMany(raw_transaction, {as: 'Incoming', foreignKey: 'nonce'});
+address_state_ref.hasMany(raw_transaction, {as: 'Incoming', foreignKey: 'to_address'});
 address_state_ref.hasMany(raw_transaction, {as: 'Outgoing', foreignKey: 'from_address'});
 
 // block has many transactions (1:n)
