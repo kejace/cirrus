@@ -21,17 +21,11 @@ const BlockDataRef = new GraphQLObjectType({
         }
       },
       coinbase:{
-        type:GraphQLString,
+        type: RawTransaction,
         resolve(block){
-          return block.coinbase;
+          return block.getCoinbase();
         }
       }
-      // ,transaction:{
-      //   type: RawTransaction,
-      //   resolve(block){
-      //     return block.getTransaction();
-      //   }
-      // }
     };
   }
 });
