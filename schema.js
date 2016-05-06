@@ -50,7 +50,7 @@ const RawTransaction = new GraphQLObjectType({
       from_address:{
         type:AddressStateRef,
         resolve(raw_transaction){
-          return raw_transaction.from_address;
+          return raw_transaction.getAddress();
         }
       },
       to_address:{
