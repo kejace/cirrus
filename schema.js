@@ -54,7 +54,7 @@ const RawTransaction = new GraphQLObjectType({
         }
       },
       to_address:{
-        type:AddressStateRef,
+        type:GraphQLString,
         resolve(raw_transaction){
           return raw_transaction.to_address;
         }
