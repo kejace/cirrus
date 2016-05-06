@@ -21,7 +21,7 @@ const BlockDataRef = new GraphQLObjectType({
         }
       },
       coinbase:{
-        type: RawTransaction,
+        type: AddressStateRef,
         resolve(block){
           return block.getCoinbase();
         }
