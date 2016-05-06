@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     number: {
-      type: 'NUMERIC',
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     gas_limit: {
