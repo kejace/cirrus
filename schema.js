@@ -183,6 +183,9 @@ const Query2 = new GraphQLObjectType({
           },
           from_address: {
             type: GraphQLString
+          },
+          to_address: {
+            type: GraphQLString
           }
         },
         resolve(root, args){
@@ -197,6 +200,9 @@ const Query2 = new GraphQLObjectType({
           },
           address: {
             type: GraphQLString
+          },
+          nonce: {
+            type: GraphQLInt
           }
         },
         resolve(root, args){
