@@ -167,6 +167,17 @@ const Query2 = new GraphQLObjectType({
   description: 'Root query object',
   fields: () => {
     return {
+      mined_blocks: {
+        type: new GraphQLList(BlockDataRef),
+        args: {
+          coinbase: {
+            type: GraphQLString
+          }
+        },
+        resolve(root, args){
+          return Db.models.block_data_ref.findAll({where:args});
+        }
+      },
       blocks: {
         type: new GraphQLList(BlockDataRef),
         args: {
