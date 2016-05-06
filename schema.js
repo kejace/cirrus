@@ -87,7 +87,7 @@ const AddressStateRef = new GraphQLObjectType({
         }
       },
       blocks:{
-        type:GraphQLInt,
+        type:GraphQLString,
         resolve(address_state_ref){
           return address_state_ref.getBlock();
         }
