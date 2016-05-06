@@ -93,6 +93,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'block_data_ref'
+    tableName: 'block_data_ref',
+    timestamps: false
   });
 };
