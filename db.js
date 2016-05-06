@@ -24,10 +24,10 @@ var address_state_ref = AddressStateRef(Conn, Sequelize);
 
 //raw_transaction.belongsTo(block_data_ref);
 //block_data_ref.hasMany(raw_transaction);
-address_state_ref.hasMany(raw_transaction, {as: 'Transaction', foreignKey: {name:'to_address'}});
+address_state_ref.belongsTo(raw_transaction, {as: 'Transaction', foreignKey: {name:'to_address'}});
 //address_state_ref.belongsTo(raw_transaction, {foreignKey: 'to_address'});
 //address_state_ref.hasOne(address_state_ref, {foreignKey: 'to_address'});
-raw_transaction.hasOne(address_state_ref, {as: 'Address', foreignKey: {name:'address', allowNull: false}});
+raw_transaction.hasOne(address_state_ref, {as: 'Address', foreignKey: {name:'address'}});
 //raw_transaction.hasOne(address_state_ref, {foreignKey: 'from_address'});
 //raw_transaction.belongsTo(address_state_ref, {foreignKey: 'to_address'});
 
