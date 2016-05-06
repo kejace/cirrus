@@ -86,10 +86,10 @@ const AddressStateRef = new GraphQLObjectType({
           return address_state_ref.getTransaction();
         }
       },
-      blocks:{
-        type:GraphQLString,
+      mined_blocks:{
+        type:GraphQLList(BlockDataRef),
         resolve(address_state_ref){
-          return address_state_ref.getBlock();
+          return address_state_ref.getBlocks();
         }
       }
     };
