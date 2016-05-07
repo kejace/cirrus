@@ -14,7 +14,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     from_address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     nonce: {
       type: DataTypes.BIGINT,
@@ -31,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
     to_address: {
       type: DataTypes.STRING,
       allowNull: true,
-      primaryKey: true
+      //primaryKey: true
     },
     value: {
       type: DataTypes.BIGINT,
