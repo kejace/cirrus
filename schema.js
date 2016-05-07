@@ -64,6 +64,12 @@ const RawTransaction = new GraphQLObjectType({
         resolve(raw_transaction){
           return raw_transaction.getRecipient();
         }
+      },
+      sender:{
+        type: AddressStateRef,
+        resolve(raw_transaction){
+          return raw_transaction.getSender();
+        }
       }
     };
   }

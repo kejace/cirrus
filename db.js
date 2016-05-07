@@ -36,7 +36,8 @@ address_state_ref.hasMany(block_data_ref, {as: 'Blocks', foreignKey: 'coinbase'}
 address_state_ref.hasMany(raw_transaction, {as: 'Incoming', foreignKey: 'to_address'});
 address_state_ref.hasMany(raw_transaction, {as: 'Outgoing', foreignKey: 'from_address'});
 
-raw_transaction.hasOne(address_state_ref, {as: 'Recipient', foreignKey: 'address'});
+raw_transaction.hasOne(address_state_ref, {as: 'Recipient', primaryKey: 'to_address', foreignKey: 'address'});
+raw_transaction.hasOne(address_state_ref, {as: 'Sender', primaryKey: 'from_address', foreignKey: 'address'});
 
 // block has many transactions (1:n)
 // transaction belongs to one block 
