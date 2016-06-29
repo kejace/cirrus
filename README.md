@@ -1,13 +1,13 @@
 # cirrus
 
-# pre-requisites
+## pre-requisites
 1. `npm install -g pg pg-hstore`
 2. `sequelize-auto -o "./models" -d sequelize_auto_test -h localhost -u my_username -p 5432 -x my_password -e postgres`
 
-# running
+## running
 1. `npm start`
 
-# example queries
+## example queries
 
 ```graphql
 {
