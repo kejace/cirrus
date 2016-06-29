@@ -8,11 +8,12 @@
 1. `npm start`
 
 # example queries
-1. ```{
-      
-        blocks (number: 100){
-                number
-                    coinbase
 
-                      }
-}```
+```json
+{
+   blocks (number: 100){
+     number
+     coinbase
+   }
+}
+```
