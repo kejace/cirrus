@@ -9,7 +9,7 @@ import AddressStateRef from './models/address_state_ref';
 //require('./models/block.js')
 
 const Conn = new Sequelize(
-  'eth',
+  'ethlive',
   'postgres',
   'api',
   {
@@ -21,6 +21,12 @@ const Conn = new Sequelize(
 var raw_transaction = RawTransaction(Conn, Sequelize);
 var block_data_ref = BlockDataRef(Conn, Sequelize);
 var address_state_ref = AddressStateRef(Conn, Sequelize);
+
+// block has one parent
+block_data_ref.hasOne(block_data_ref, {as: 'Bparent', foreignKey: 'parent_hash'});
+block_data_ref.hasOne(block_data_ref, {as: 'Hash', foreignKey: 'hash'});
+// block has many uncles
+//block_data_ref.hasMany(block_data_ref, {as: 'Uncles', foreignKey: 'uncles_hash'});
 
 // block has one address (coinbase)
 //block_data_ref.hasOne(address_state_ref, {foreignKey: 'coinbase'});

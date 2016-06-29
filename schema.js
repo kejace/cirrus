@@ -14,6 +14,24 @@ const BlockDataRef = new GraphQLObjectType({
   description: 'A mined block',
   fields(){
     return {
+      hash:{
+        type: GraphQLString,
+        resolve(block){
+            return block.hash;
+        }
+      },
+      //bparent:{
+      //  type: GraphQLList(BlockDataRef),
+      //  resolve(block){
+      //      return block.getBparent(); 
+      //  }
+      //},
+      parent_hash: {
+        type : GraphQLString,
+        resolve(block){
+            return block.parent_hash;
+        }
+      },
       number: {
         type: GraphQLInt,
         resolve(block){
@@ -205,6 +223,12 @@ const Query2 = new GraphQLObjectType({
       blocks: {
         type: new GraphQLList(BlockDataRef),
         args: {
+          hash: {
+            type: GraphQLString
+          },
+          parent_hash: {
+            type: GraphQLString
+          },
           number: {
             type: GraphQLInt
           },
