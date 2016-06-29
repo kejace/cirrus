@@ -9,7 +9,7 @@
 
 # example queries
 
-```json
+```graphql
 {
    blocks (number: 100){
      number
