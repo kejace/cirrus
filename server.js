@@ -3,7 +3,7 @@ import GraphHTTP from 'express-graphql';
 import Schema from './schema';
 
 // Config
-const APP_PORT = 3000;
+const APP_PORT = 3003;
 
 // Start
 const app = Express();
@@ -16,5 +16,5 @@ app.use('/graphql', GraphHTTP({
 }));
 
 app.listen(APP_PORT, ()=> {
-  console.log(`App listening on port ${APP_PORT}`);
+  console.log(`cirrus listening on port ${APP_PORT}`);
 });
