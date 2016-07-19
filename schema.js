@@ -1,13 +1,15 @@
 import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLInt,
-  GraphQLSchema,
-  GraphQLList,
-  GraphQLNonNull
+   GraphQLObjectType
+  ,GraphQLString
+  ,GraphQLInt
+  ,GraphQLSchema
+  ,GraphQLList
+  //,GraphQLNonNull
 } from 'graphql';
 
 import Db from './db';
+
+// @flow
 
 const Storage = new GraphQLObjectType({
   name: 'Storage',
@@ -26,10 +28,17 @@ const Storage = new GraphQLObjectType({
           return storage.value;
         }
       },
-      address_state_ref:{
-        type: GraphQLString,
+      contract:{
+        type: AddressStateRef,
+        args: {
+          id: {
+            type: GraphQLInt,
+          }
+        },
         resolve(storage){
-          return storage.address_state_ref;
+          //return Db.models.address_state_ref.findById(storage.address_state_ref_id, {attributes: ["id", "address", "nonce", "balance", "contract_root", "code", "latest_block_data_ref_number"]});
+          // findById doesn't work as long as `address` is set to primaryKey
+          return Db.models.address_state_ref.findOne({where: {'id':storage.address_state_ref_id}, attributes: ["id", "address", "nonce", "balance", "contract_root", "code", "latest_block_data_ref_number"]});
         }
       }
     }
@@ -43,8 +52,8 @@ const BlockDataRef = new GraphQLObjectType({
     return {
       hash:{
         type: GraphQLString,
-        resolve(block){
-            return block.hash;
+        resolve(block) : GraphQLString{
+          return block.hash;
         }
       },
       //bparent:{
@@ -56,7 +65,7 @@ const BlockDataRef = new GraphQLObjectType({
       parent_hash: {
         type : GraphQLString,
         resolve(block){
-            return block.parent_hash;
+          return block.parent_hash;
         }
       },
       number: {
@@ -89,7 +98,7 @@ const RawTransaction = new GraphQLObjectType({
       block:{
         type: BlockDataRef,
         resolve(raw_transaction){
-            return raw_transaction.getBlock();
+          return raw_transaction.getBlock();
         }
       },
       block_number:{
@@ -153,96 +162,39 @@ const AddressStateRef = new GraphQLObjectType({
       transaction:{
         type:RawTransaction,
         resolve(address_state_ref){
-          return address_state_ref.getTransaction();
+          return address_state_ref.getTransaction(); //acc.hasOne(tx, as: '')
         }
       },
       mined_blocks:{
         type:new GraphQLList(BlockDataRef),
         resolve(address_state_ref){
-          return address_state_ref.getBlocks();
+          return address_state_ref.getBlocks(); // acc.hasMany(block_data_ref, as: 'Blocks')
         }
       },
       incoming:{
         type:new GraphQLList(RawTransaction),
-        resolve(raw_transaction){
-          return raw_transaction.getIncoming();
+        args: {
+          nonce: {
+            type: GraphQLInt,
+          }
+        },
+        resolve(raw_transaction, args){
+          if(args['nonce'])
+            return raw_transaction.getIncoming({where: {'nonce':args['nonce']}}); // tx.hasMany(address_state_ref, as: 'Incoming')
+          else
+            return raw_transaction.getIncoming(); // tx.hasMany(address_state_ref, as: 'Incoming')
+            
         }
       },
       outgoing:{
         type:new GraphQLList(RawTransaction),
         resolve(raw_transaction){
-          return raw_transaction.getOutgoing();
+          return raw_transaction.getOutgoing(); // tx.hasMany(address_state_ref, as: 'Outgoing')
         }
       }
     };
   }
 })
-
-// const Post = new GraphQLObjectType({
-//   name: 'Post',
-//   description: 'Blog post',
-//   fields () {
-//     return {
-//       title: {
-//         type: GraphQLString,
-//         resolve (post) {
-//           return post.title;
-//         }
-//       },
-//       content: {
-//         type: GraphQLString,
-//         resolve (post) {
-//           return post.content;
-//         }
-//       },
-//       person: {
-//         type: Person,
-//         resolve (post) {
-//           return post.getPerson();
-//         }
-//       }
-//     };
-//   }
-// });
-
-// const Person = new GraphQLObjectType({
-//   name: 'Person',
-//   description: 'This represents a Person',
-//   fields: () => {
-//     return {
-//       id: {
-//         type: GraphQLInt,
-//         resolve (person) {
-//           return person.id;
-//         }
-//       },
-//       firstName: {
-//         type: GraphQLString,
-//         resolve (person) {
-//           return person.firstName;
-//         }
-//       },
-//       lastName: {
-//         type: GraphQLString,
-//         resolve (person) {
-//           return person.lastName;
-//         }
-//       },
-//       email: {
-//         type: GraphQLString,
-//         resolve (person) {
-//           return person.email;
-//         }
-//       },
-//       posts: {
-//         type: new GraphQLList(Post),
-//         resolve (person) {
-//           return person.getPosts();
-//         }
-//       }
-//     };
-//   }
-// });
 
 const EthereumQuery = new GraphQLObjectType({
   name: 'EthereumQuery',
@@ -314,6 +266,20 @@ const EthereumQuery = new GraphQLObjectType({
           return Db.models.address_state_ref.findAll({where: args});
         }
       },
+
+      storageKey:{
+        type: new GraphQLList(Storage),
+        args: {
+          key: {
+            type: GraphQLString
+          }
+        },
+        resolve(root, _){
+          return 0;
+          //return Db.models.storage.findAll({where: {key: }})
+        }
+      },
+
       storage: {
         type: new GraphQLList(Storage),
         args: {
@@ -329,34 +295,12 @@ const EthereumQuery = new GraphQLObjectType({
   }
 });
 
-// const Query = new GraphQLObjectType({
-//   name: 'Query',
-//   description: 'Root query object',
-//   fields: () => {
-//     return {
-//       people: {
-//         type: new GraphQLList(Person),
-//         args: {
-//           id: {
-//             type: GraphQLInt
-//           },
-//           email: {
-//             type: GraphQLString
-//           }
-//         },
-//         resolve (root, args) {
-//           return Db.models.person.findAll({ where: args });
-//         }
-//       },
-//       posts: {
-//         type: new GraphQLList(Post),
-//         resolve (root, args) {
-//           return Db.models.post.findAll({ where: args });
-//         }
-//       }
-//     };
-//   }
-// });
+const Schema = new GraphQLSchema({
+  query: EthereumQuery
+ // , mutation: Mutation
+});
+
+export default Schema;
 
 // const Mutation = new GraphQLObjectType({
 //   name: 'Mutations',
@@ -387,10 +331,3 @@ const EthereumQuery = new GraphQLObjectType({
 //     };
 //   }
 // });
-
-const Schema = new GraphQLSchema({
-  query: EthereumQuery
- // , mutation: Mutation
-});
-
-export default Schema;

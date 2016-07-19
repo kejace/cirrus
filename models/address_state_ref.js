@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     nonce: {
       type: DataTypes.BIGINT,
-      allowNull: false
+      allowNull: true
     },
     balance: {
       type: DataTypes.BIGINT,
