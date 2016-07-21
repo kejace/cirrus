@@ -11,15 +11,105 @@ import Db from './db';
 
 // @flow
 
+
+//
+// modified from
+// http://stackoverflow.com/a/21648161/509642
+// 
+
+String.prototype.hexEncode16 = function(){
+    var hex, i;
+    var result = "";
+    for (i=0; i<this.length; i++) {
+        hex = this.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+    return result
+}
+
+String.prototype.hexDecode16 = function(){
+    var j;
+    var hexes = this.match(/.{1,4}/g) || [];
+    var back = "";
+    for(j = 0; j<hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+    return back;
+}
+
+String.prototype.hexEncode8 = function(){
+    var hex, i;
+    var result = "";
+    for (i=0; i<this.length; i++) {
+        hex = this.charCodeAt(i).toString(16);
+        result += ("0"+hex).slice(-2);
+    }
+    return result
+}
+
+String.prototype.hexDecode8 = function(){
+    var j;
+    var hexes = this.match(/.{1,2}/g) || [];
+    var back = "";
+    for(j = 0; j<hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+    return back;
+}
+
+//
+// from
+// http://stackoverflow.com/a/14810714/509642
+// 
+
+Object.defineProperty(Object.prototype, 'map', {
+    value: function(f, ctx) {
+        ctx = ctx || this;
+        var self = this, result = {};
+        Object.keys(self).forEach(function(k) {
+            result[k] = f.call(ctx, self[k], k, self); 
+        });
+        return result;
+    }
+});
+
+var fromSolidity = function(x){
+  if(x)
+    return x.split('0').join('').hexDecode8();
+  else
+    return undefined;
+}
+
+var toSolidity = function(x){
+  if(x)
+    return ("0".repeat(64)+x.hexEncode8()).slice(-64);
+  else
+    return undefined;
+}
+
 const Storage = new GraphQLObjectType({
   name: 'Storage',
   description: 'Storage of a contract',
   fields(){
     return {
+      keyString:{
+        type: GraphQLString,
+        resolve(storage){
+          return fromSolidity(storage.key);
+        }
+      },
       key:{
         type: GraphQLString,
         resolve(storage){
           return storage.key;
+        }
+      },
+      valueString:{
+        type: GraphQLString,
+        resolve(storage){
+          //return storage.value.split('00').slice(-1)[0].hexDecode8();
+          return fromSolidity(storage.value);
+          //­­­return storage.value.hexDecode8().toString();
         }
       },
       value:{
@@ -38,7 +128,7 @@ const Storage = new GraphQLObjectType({
         resolve(storage){
           //return Db.models.address_state_ref.findById(storage.address_state_ref_id, {attributes: ["id", "address", "nonce", "balance", "contract_root", "code", "latest_block_data_ref_number"]});
           // findById doesn't work as long as `address` is set to primaryKey
-          return Db.models.address_state_ref.findOne({where: {'id':storage.address_state_ref_id}, attributes: ["id", "address", "nonce", "balance", "contract_root", "code", "latest_block_data_ref_number"]});
+          return Db.models.address_state_ref.findOne({where: {'id':storage.address_state_ref_id}});
         }
       }
     }
@@ -267,23 +357,36 @@ const EthereumQuery = new GraphQLObjectType({
         }
       },
 
-      storageKey:{
+      storageSol:{
         type: new GraphQLList(Storage),
         args: {
           key: {
             type: GraphQLString
+          },
+          value: {
+            type: GraphQLString
           }
         },
-        resolve(root, _){
-          return 0;
-          //return Db.models.storage.findAll({where: {key: }})
-        }
+        resolve(root, args){
+          return Db.models.storage.findAll(
+            {
+              where: { 
+                //args.map(toSolidity)
+                //'key': toSolidity(args['key'])
+                'value': toSolidity(args['value'])
+              }, attributes: ['id', 'address_state_ref_id', 'value', 'key']
+            }
+          );
+        } 
       },
 
       storage: {
         type: new GraphQLList(Storage),
         args: {
           key: {
+            type: GraphQLString
+          },
+          value: {
             type: GraphQLString
           }
         },
@@ -295,16 +398,9 @@ const EthereumQuery = new GraphQLObjectType({
   }
 });
 
-const Schema = new GraphQLSchema({
-  query: EthereumQuery
- // , mutation: Mutation
-});
-
-export default Schema;
-
-// const Mutation = new GraphQLObjectType({
-//   name: 'Mutations',
-//   description: 'Functions to set stuff',
+// const EthereumMutation = new GraphQLObjectType({
+//   name: 'EthereumMutation',
+//   description: 'Sending transactions',
 //   fields () {
 //     return {
 //       addPerson: {
@@ -331,3 +427,10 @@ export default Schema;
 //     };
 //   }
 // });
+
+const Schema = new GraphQLSchema({
+  query: EthereumQuery
+  //, mutation: EthereumMutation
+});
+
+export default Schema;

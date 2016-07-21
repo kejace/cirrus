@@ -25,7 +25,7 @@ var address_state_ref = AddressStateRef(Conn, Sequelize);
 var storage = Storage(Conn, Sequelize);
 
 // storage has one address
-storage.hasOne(address_state_ref, {as: 'Contract', primaryKey: 'address_state_ref', foreignKey: 'state'})
+//storage.hasOne(address_state_ref, {as: 'Contract', primaryKey: 'address_state_ref', foreignKey: 'state'})
 
 // block has one parent
 block_data_ref.hasOne(block_data_ref, {as: 'Parent', foreignKey: 'parent_hash'});
@@ -42,7 +42,7 @@ address_state_ref.hasMany(block_data_ref, {as: 'Blocks', foreignKey: 'coinbase'}
 address_state_ref.hasMany(raw_transaction, {as: 'Incoming', foreignKey: 'to_address'});
 address_state_ref.hasMany(raw_transaction, {as: 'Outgoing', foreignKey: 'from_address'});
 // address has one storage (need to join on `id`)
-address_state_ref.hasOne(storage, {as: 'State', foreignKey: 'state'});
+//address_state_ref.hasOne(storage, {as: 'State', foreignKey: 'state'});
 
 // tx has one recepient
 raw_transaction.hasOne(address_state_ref, {as: 'Recipient', primaryKey: 'to_address', foreignKey: 'address'});
